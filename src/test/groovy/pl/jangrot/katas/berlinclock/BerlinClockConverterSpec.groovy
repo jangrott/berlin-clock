@@ -21,7 +21,7 @@ class BerlinClockConverterSpec extends Specification {
         inputTime  || outputTime
         "00:00:00" || String.format("Y%nOOOO%nOOOO%nOOOOOOOOOOO%nOOOO")
         "13:17:01" || String.format("O%nRROO%nRRRO%nYYROOOOOOOO%nYYOO")
-        "23:59:59" || String.format("Y%nRRRR%nRRRO%nYYRYYRYYRYY%nYYYY")
+        "23:59:59" || String.format("O%nRRRR%nRRRO%nYYRYYRYYRYY%nYYYY")
         "24:00:00" || String.format("Y%nRRRR%nRRRR%nOOOOOOOOOOO%nOOOO")
     }
 }
