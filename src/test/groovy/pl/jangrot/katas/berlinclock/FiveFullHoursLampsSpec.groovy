@@ -1,9 +1,7 @@
 package pl.jangrot.katas.berlinclock
 
 import spock.lang.Specification
-import spock.lang.Unroll
 
-@Unroll
 class FiveFullHoursLampsSpec extends Specification {
 
     def "The next FiveFullHoursLamp lights up every 5 hours"() {
