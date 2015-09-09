@@ -4,16 +4,16 @@ import static pl.jangrot.katas.berlinclock.Constants.HOURS_LAMPS_OFF;
 import static pl.jangrot.katas.berlinclock.Constants.HOURS_LAMP_ON;
 import static pl.jangrot.katas.berlinclock.Utils.replaceNFirstOccurrences;
 
-class FiveFullHoursLamps {
+class OneFullHourLamps {
 
     private final int hours;
 
-    FiveFullHoursLamps(int hours) {
+    OneFullHourLamps(int hours) {
         this.hours = hours;
     }
 
     String get() {
-        return replaceNFirstOccurrences(hours / 5, HOURS_LAMPS_OFF, HOURS_LAMP_ON);
+        return replaceNFirstOccurrences(hours % 5, HOURS_LAMPS_OFF, HOURS_LAMP_ON);
     }
 
 }

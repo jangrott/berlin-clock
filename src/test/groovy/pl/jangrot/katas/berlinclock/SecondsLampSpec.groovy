@@ -19,7 +19,7 @@ class SecondsLampSpec extends Specification {
         58      || "Y"
     }
 
-    def "The SecondsLamp doesn't lights when the seconds value is odd"() {
+    def "The SecondsLamp doesn't light when the seconds value is odd"() {
         expect:
         new SecondsLamp(seconds).get() == result
         where:
