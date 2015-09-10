@@ -30,4 +30,11 @@ class BerlinClockConverterSpec extends Specification {
         then:
         thrown IllegalArgumentException
     }
+
+    def "The conversion of time with empty value throws exception"() {
+        when:
+        new BerlinClockConverter().convert("")
+        then:
+        thrown IllegalArgumentException
+    }
 }

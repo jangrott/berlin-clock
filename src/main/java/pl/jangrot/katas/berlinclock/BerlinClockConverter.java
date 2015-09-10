@@ -3,6 +3,7 @@ package pl.jangrot.katas.berlinclock;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static pl.jangrot.katas.berlinclock.BerlinClockConverter.BerlinClock.BerlinClockBuilder.berlinClock;
 
 public class BerlinClockConverter implements TimeConverter {
@@ -35,11 +36,9 @@ public class BerlinClockConverter implements TimeConverter {
         seconds = partsOfTime[2];
     }
 
-
     private void validateTime(String time) {
-        checkArgument(time != null, "Time can not be null");
+        checkArgument(!isNullOrEmpty(time), "Time can not be null");
     }
-
 
     @FunctionalInterface
     interface Clock {
