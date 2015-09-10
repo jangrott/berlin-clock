@@ -37,9 +37,9 @@ public class BerlinClockConverter implements TimeConverter {
     }
 
     private void checkAgainstFormat(String time) {
-        final String TIME_VALIDATION_PATTERN = "^([0-1]\\d|2[0-4]):([0-5]\\d):([0-5]\\d)$";
+        final Pattern TIME_VALIDATION_PATTERN = Pattern.compile("^([0-1]\\d|2[0-4]):([0-5]\\d):([0-5]\\d)$");
 
-        matcher = Pattern.compile(TIME_VALIDATION_PATTERN).matcher(time);
+        matcher = TIME_VALIDATION_PATTERN.matcher(time);
         checkArgument(matcher.matches(), "Time has to be in format of HH:mm:ss or kk:mm:ss");
     }
 
