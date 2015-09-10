@@ -13,11 +13,9 @@ public class BerlinClockConverter implements TimeConverter {
                 .toArray();
 
         BerlinClock berlinClock = berlinClock()
-                .withSecondsLamp(new SecondsLamp(partsOfTime[2]))
-                .withFiveFullHoursLamps(new FiveFullHoursLamps(partsOfTime[0]))
-                .withOneFullHourLamps(new OneFullHourLamps(partsOfTime[0]))
-                .withFiveFullMinutesLamps(new FiveFullMinutesLamps(partsOfTime[1]))
-                .withOneFullMinuteLamps(new OneFullMinuteLamps(partsOfTime[1]))
+                .setHours(partsOfTime[0])
+                .setMinutes(partsOfTime[1])
+                .setSeconds(partsOfTime[2])
                 .build();
 
         return berlinClock.time();
@@ -68,11 +66,9 @@ public class BerlinClockConverter implements TimeConverter {
         }
 
         static final class BerlinClockBuilder {
-            private SecondsLamp secondsLamp;
-            private FiveFullHoursLamps fiveFullHoursLamps;
-            private OneFullHourLamps oneFullHourLamps;
-            private FiveFullMinutesLamps fiveFullMinutesLamps;
-            private OneFullMinuteLamps oneFullMinuteLamps;
+            private int hours;
+            private int minutes;
+            private int seconds;
 
             private BerlinClockBuilder() {
             }
@@ -81,37 +77,29 @@ public class BerlinClockConverter implements TimeConverter {
                 return new BerlinClockBuilder();
             }
 
-            BerlinClockBuilder withSecondsLamp(SecondsLamp secondsLamp) {
-                this.secondsLamp = secondsLamp;
+
+            BerlinClockBuilder setHours(int hours) {
+                this.hours = hours;
                 return this;
             }
 
-            BerlinClockBuilder withFiveFullHoursLamps(FiveFullHoursLamps fiveFullHoursLamps) {
-                this.fiveFullHoursLamps = fiveFullHoursLamps;
+
+            BerlinClockBuilder setMinutes(int minutes) {
+                this.minutes = minutes;
                 return this;
             }
 
-            BerlinClockBuilder withOneFullHourLamps(OneFullHourLamps oneFullHourLamps) {
-                this.oneFullHourLamps = oneFullHourLamps;
-                return this;
-            }
-
-            BerlinClockBuilder withFiveFullMinutesLamps(FiveFullMinutesLamps fiveFullMinutesLamps) {
-                this.fiveFullMinutesLamps = fiveFullMinutesLamps;
-                return this;
-            }
-
-            BerlinClockBuilder withOneFullMinuteLamps(OneFullMinuteLamps oneFullMinuteLamps) {
-                this.oneFullMinuteLamps = oneFullMinuteLamps;
+            BerlinClockBuilder setSeconds(int seconds) {
+                this.seconds = seconds;
                 return this;
             }
 
             BerlinClock build() {
-                return new BerlinClock(secondsLamp,
-                        fiveFullHoursLamps,
-                        oneFullHourLamps,
-                        fiveFullMinutesLamps,
-                        oneFullMinuteLamps);
+                return new BerlinClock(new SecondsLamp(seconds),
+                        new FiveFullHoursLamps(hours),
+                        new OneFullHourLamps(hours),
+                        new FiveFullMinutesLamps(minutes),
+                        new OneFullMinuteLamps(minutes));
             }
         }
     }
