@@ -2,23 +2,42 @@ package pl.jangrot.katas.berlinclock;
 
 import java.util.stream.Stream;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static pl.jangrot.katas.berlinclock.BerlinClockConverter.BerlinClock.BerlinClockBuilder.berlinClock;
 
 public class BerlinClockConverter implements TimeConverter {
 
+    private int hours;
+    private int minutes;
+    private int seconds;
+
     @Override
     public String convert(String time) {
+        validateTime(time);
+        extractPartsOfTime(time);
+
+        BerlinClock berlinClock = berlinClock()
+                .setHours(hours)
+                .setMinutes(minutes)
+                .setSeconds(seconds)
+                .build();
+
+        return berlinClock.time();
+    }
+
+    private void extractPartsOfTime(String time) {
         int[] partsOfTime = Stream.of(time.split(":"))
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        BerlinClock berlinClock = berlinClock()
-                .setHours(partsOfTime[0])
-                .setMinutes(partsOfTime[1])
-                .setSeconds(partsOfTime[2])
-                .build();
+        hours = partsOfTime[0];
+        minutes = partsOfTime[1];
+        seconds = partsOfTime[2];
+    }
 
-        return berlinClock.time();
+
+    private void validateTime(String time) {
+        checkArgument(time != null, "Time can not be null");
     }
 
 
@@ -52,17 +71,12 @@ public class BerlinClockConverter implements TimeConverter {
 
         @Override
         public String time() {
-            return new StringBuilder()
-                    .append(secondsLamp.get())
-                    .append(NEW_LINE)
-                    .append(fiveFullHoursLamps.get())
-                    .append(NEW_LINE)
-                    .append(oneFullHourLamps.get())
-                    .append(NEW_LINE)
-                    .append(fiveFullMinutesLamps.get())
-                    .append(NEW_LINE)
-                    .append(oneFullMinuteLamps.get())
-                    .toString();
+            return String.join(NEW_LINE,
+                    secondsLamp.get(),
+                    fiveFullHoursLamps.get(),
+                    oneFullHourLamps.get(),
+                    fiveFullMinutesLamps.get(),
+                    oneFullMinuteLamps.get());
         }
 
         static final class BerlinClockBuilder {
@@ -77,12 +91,10 @@ public class BerlinClockConverter implements TimeConverter {
                 return new BerlinClockBuilder();
             }
 
-
             BerlinClockBuilder setHours(int hours) {
                 this.hours = hours;
                 return this;
             }
-
 
             BerlinClockBuilder setMinutes(int minutes) {
                 this.minutes = minutes;

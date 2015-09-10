@@ -1,6 +1,5 @@
 package pl.jangrot.katas.berlinclock
 
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -23,5 +22,12 @@ class BerlinClockConverterSpec extends Specification {
         "13:17:01" || String.format("O%nRROO%nRRRO%nYYROOOOOOOO%nYYOO")
         "23:59:59" || String.format("O%nRRRR%nRRRO%nYYRYYRYYRYY%nYYYY")
         "24:00:00" || String.format("Y%nRRRR%nRRRR%nOOOOOOOOOOO%nOOOO")
+    }
+
+    def "The conversion of time with value equal to null throws exception"() {
+        when:
+        new BerlinClockConverter().convert(null)
+        then:
+        thrown IllegalArgumentException
     }
 }
