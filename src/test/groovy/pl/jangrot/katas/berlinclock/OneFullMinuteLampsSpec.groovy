@@ -3,7 +3,7 @@ package pl.jangrot.katas.berlinclock
 import spock.lang.Specification
 
 class OneFullMinuteLampsSpec extends Specification {
-    def "The next OneFullHourLamp lights up every 1 hour"() {
+    def "The next OneMinuteHourLamp lights up every 1 hour"() {
         expect:
         new OneFullMinuteLamps(minutes).get() == result
         where:

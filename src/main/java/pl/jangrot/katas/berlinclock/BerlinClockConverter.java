@@ -9,6 +9,8 @@ import static pl.jangrot.katas.berlinclock.BerlinClockConverter.BerlinClock.Berl
 
 public class BerlinClockConverter implements TimeConverter {
 
+    private static final Pattern TIME_VALIDATION_PATTERN = Pattern.compile("^([0-1]\\d|2[0-4]):([0-5]\\d):([0-5]\\d)$");
+
     private int hours;
     private int minutes;
     private int seconds;
@@ -37,8 +39,6 @@ public class BerlinClockConverter implements TimeConverter {
     }
 
     private void checkAgainstFormat(String time) {
-        final Pattern TIME_VALIDATION_PATTERN = Pattern.compile("^([0-1]\\d|2[0-4]):([0-5]\\d):([0-5]\\d)$");
-
         matcher = TIME_VALIDATION_PATTERN.matcher(time);
         checkArgument(matcher.matches(), "Time has to be in format of HH:mm:ss or kk:mm:ss");
     }
