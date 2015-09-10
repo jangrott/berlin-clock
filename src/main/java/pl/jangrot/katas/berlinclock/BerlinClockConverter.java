@@ -12,6 +12,7 @@ public class BerlinClockConverter implements TimeConverter {
     private int hours;
     private int minutes;
     private int seconds;
+
     @Override
     public String convert(String time) {
         validateTime(time);
@@ -53,16 +54,17 @@ public class BerlinClockConverter implements TimeConverter {
 
         String time();
     }
+
     static final class BerlinClock implements Clock {
 
         private static final String NEW_LINE = System.lineSeparator();
 
         private final SecondsLamp secondsLamp;
-
         private final FiveFullHoursLamps fiveFullHoursLamps;
         private final OneFullHourLamps oneFullHourLamps;
         private final FiveFullMinutesLamps fiveFullMinutesLamps;
         private final OneFullMinuteLamps oneFullMinuteLamps;
+
         private BerlinClock(SecondsLamp secondsLamp,
                             FiveFullHoursLamps fiveFullHoursLamps,
                             OneFullHourLamps oneFullHourLamps,
@@ -91,6 +93,7 @@ public class BerlinClockConverter implements TimeConverter {
             private int hours;
             private int minutes;
             private int seconds;
+
             private BerlinClockBuilder() {
             }
 
@@ -122,6 +125,7 @@ public class BerlinClockConverter implements TimeConverter {
             }
 
         }
+
     }
 
     private Matcher matcher;
