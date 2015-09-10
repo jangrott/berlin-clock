@@ -9,8 +9,6 @@ import static pl.jangrot.katas.berlinclock.BerlinClockConverter.BerlinClock.Berl
 
 public class BerlinClockConverter implements TimeConverter {
 
-    public static final Pattern TIME_PATTERN = Pattern.compile("^([0-1]\\d|2[0-4]):([0-5]\\d):([0-5]\\d)$");
-
     private int hours;
     private int minutes;
     private int seconds;
@@ -18,7 +16,7 @@ public class BerlinClockConverter implements TimeConverter {
     @Override
     public String convert(String time) {
         validateTime(time);
-        extractPartsOfTime(time);
+        extractPartsOfTime();
 
         BerlinClock berlinClock = berlinClock()
                 .setHours(hours)
@@ -29,22 +27,23 @@ public class BerlinClockConverter implements TimeConverter {
         return berlinClock.time();
     }
 
-    private static void validateTime(String time) {
+    private void validateTime(String time) {
         checkAgainstNullOrEmpty(time);
         checkAgainstFormat(time);
     }
 
-    private static void checkAgainstNullOrEmpty(String time) {
+    private void checkAgainstNullOrEmpty(String time) {
         checkArgument(!isNullOrEmpty(time), "Time can not be null or empty");
     }
 
-    private static void checkAgainstFormat(String time) {
-        checkArgument(TIME_PATTERN.matcher(time).matches(), "Time has to be in format of HH:mm:ss or kk:mm:ss");
+    private void checkAgainstFormat(String time) {
+        final Pattern TIME_VALIDATION_PATTERN = Pattern.compile("^([0-1]\\d|2[0-4]):([0-5]\\d):([0-5]\\d)$");
+
+        matcher = TIME_VALIDATION_PATTERN.matcher(time);
+        checkArgument(matcher.matches(), "Time has to be in format of HH:mm:ss or kk:mm:ss");
     }
 
-    private void extractPartsOfTime(String time) {
-        Matcher matcher = TIME_PATTERN.matcher(time);
-
+    private void extractPartsOfTime() {
         hours = Integer.parseInt(matcher.group(1));
         minutes = Integer.parseInt(matcher.group(2));
         seconds = Integer.parseInt(matcher.group(3));
@@ -129,4 +128,5 @@ public class BerlinClockConverter implements TimeConverter {
 
     }
 
+    private Matcher matcher;
 }
