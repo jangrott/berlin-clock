@@ -5,7 +5,6 @@ import spock.lang.Unroll
 
 import static org.assertj.core.api.Assertions.assertThat
 
-@Unroll
 class BerlinClockConverterSpec extends Specification {
 
     def "The BerlinClockConverter converts time"() {
@@ -13,6 +12,7 @@ class BerlinClockConverterSpec extends Specification {
         assertThat(new BerlinClockConverter().convert("13:03:13")).isNotNull()
     }
 
+    @Unroll
     def "The BerlinClock conversion of #inputTime is #outputTime"() {
         expect:
         new BerlinClockConverter().convert(inputTime) == outputTime
@@ -36,5 +36,14 @@ class BerlinClockConverterSpec extends Specification {
         new BerlinClockConverter().convert("")
         then:
         thrown IllegalArgumentException
+    }
+
+    def "The conversion of invalid time throws exception"() {
+        when:
+        new BerlinClockConverter().convert(time)
+        then:
+        thrown IllegalArgumentException
+        where:
+        time << ["00:60:00", "25:00:00", "01:12:60", "0:0:0"]
     }
 }

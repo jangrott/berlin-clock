@@ -1,6 +1,7 @@
 package pl.jangrot.katas.berlinclock;
 
-import java.util.stream.Stream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -11,11 +12,10 @@ public class BerlinClockConverter implements TimeConverter {
     private int hours;
     private int minutes;
     private int seconds;
-
     @Override
     public String convert(String time) {
         validateTime(time);
-        extractPartsOfTime(time);
+        extractPartsOfTime();
 
         BerlinClock berlinClock = berlinClock()
                 .setHours(hours)
@@ -26,35 +26,43 @@ public class BerlinClockConverter implements TimeConverter {
         return berlinClock.time();
     }
 
-    private void extractPartsOfTime(String time) {
-        int[] partsOfTime = Stream.of(time.split(":"))
-                .mapToInt(Integer::parseInt)
-                .toArray();
-
-        hours = partsOfTime[0];
-        minutes = partsOfTime[1];
-        seconds = partsOfTime[2];
+    private void validateTime(String time) {
+        checkAgainstNullOrEmpty(time);
+        checkAgainstFormat(time);
     }
 
-    private void validateTime(String time) {
-        checkArgument(!isNullOrEmpty(time), "Time can not be null");
+    private void checkAgainstNullOrEmpty(String time) {
+        checkArgument(!isNullOrEmpty(time), "Time can not be null or empty");
+    }
+
+    private void checkAgainstFormat(String time) {
+        final String TIME_VALIDATION_PATTERN = "^([0-1]\\d|2[0-4]):([0-5]\\d):([0-5]\\d)$";
+
+        matcher = Pattern.compile(TIME_VALIDATION_PATTERN).matcher(time);
+        checkArgument(matcher.matches(), "Time has to be in format of HH:mm:ss or kk:mm:ss");
+    }
+
+    private void extractPartsOfTime() {
+        hours = Integer.parseInt(matcher.group(1));
+        minutes = Integer.parseInt(matcher.group(2));
+        seconds = Integer.parseInt(matcher.group(3));
     }
 
     @FunctionalInterface
     interface Clock {
+
         String time();
     }
-
     static final class BerlinClock implements Clock {
 
         private static final String NEW_LINE = System.lineSeparator();
 
         private final SecondsLamp secondsLamp;
+
         private final FiveFullHoursLamps fiveFullHoursLamps;
         private final OneFullHourLamps oneFullHourLamps;
         private final FiveFullMinutesLamps fiveFullMinutesLamps;
         private final OneFullMinuteLamps oneFullMinuteLamps;
-
         private BerlinClock(SecondsLamp secondsLamp,
                             FiveFullHoursLamps fiveFullHoursLamps,
                             OneFullHourLamps oneFullHourLamps,
@@ -79,10 +87,10 @@ public class BerlinClockConverter implements TimeConverter {
         }
 
         static final class BerlinClockBuilder {
+
             private int hours;
             private int minutes;
             private int seconds;
-
             private BerlinClockBuilder() {
             }
 
@@ -112,7 +120,9 @@ public class BerlinClockConverter implements TimeConverter {
                         new FiveFullMinutesLamps(minutes),
                         new OneFullMinuteLamps(minutes));
             }
+
         }
     }
 
+    private Matcher matcher;
 }
